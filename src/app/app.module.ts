@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home';
 import { LoginComponent, RegisterComponent } from './account';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { fakeBackendProvider } from './_helpers';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     AppRoutingModule,
     NgbModule
   ],
-  providers: [],
+  providers: [fakeBackendProvider],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
