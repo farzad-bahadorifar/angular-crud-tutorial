@@ -7,18 +7,22 @@ import { HomeComponent } from './home';
 import { LoginComponent, RegisterComponent } from './account';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { fakeBackendProvider } from './_helpers';
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgbModule
+    NgbModule,
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [fakeBackendProvider],
   bootstrap: [AppComponent]
