@@ -6,8 +6,8 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home';
 import { LoginComponent, RegisterComponent } from './account';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { fakeBackendProvider } from './_helpers';
-import { HttpClientModule } from '@angular/common/http';
+import { ErrorInterceptor, JwtInterceptor, fakeBackendProvider } from './_helpers';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
@@ -24,7 +24,10 @@ import { ReactiveFormsModule } from '@angular/forms';
     HttpClientModule,
     ReactiveFormsModule
   ],
-  providers: [fakeBackendProvider],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
