@@ -3,7 +3,10 @@ import { HttpRequest, HttpResponse, HttpHandler, HttpEvent, HttpInterceptor, HTT
 import { Observable, of, throwError } from 'rxjs';
 import { delay, materialize, dematerialize } from 'rxjs/operators';
 
-let users = [{ id: 1, firstName: 'Jason', lastName: 'Watmore', username: 'test', password: 'test' }];
+
+const userKey = 'angular-crud-tutorial';
+let users: any[] = JSON.parse(localStorage.getItem(userKey)!) || [];
+// let users = [{ id: 1, firstName: 'Jason', lastName: 'Watmore', username: 'test', password: 'test' }];
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
@@ -16,6 +19,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             switch (true) {
                 case url.endsWith('/users/authenticate') && method === 'POST':
                     return authenticate();
+                case url.endsWith('/users/register') && method === 'POST':
+                    return register()
                 default:
                     // pass through any requests not handled above
                     return next.handle(request);
@@ -32,6 +37,19 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 ...basicDetails(user),
                 token: 'fake-jwt-token'
             })
+        }
+
+        function register() {
+            const user = body;
+
+            if (users.find(x => x.username === user.username)) {
+                return error ('Username "' + user.username + '" is already taken');
+            }
+
+            user.id = users.length ? Math.max(...users.map(x => x.id)) + 1 : 1;
+            users.push(user);
+            localStorage.setItem(userKey, JSON.stringify(users));
+            return ok();
         }
 
         // helper functions
