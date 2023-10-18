@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AccountService } from "@app/_services";
+import { first } from "rxjs";
 
 @Component({templateUrl: 'register.component.html'})
 export class RegisterComponent implements OnInit {
