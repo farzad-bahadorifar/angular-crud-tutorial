@@ -3,21 +3,22 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
-import { AccountService } from '@app/_services'
+import { AccountService, AlertService } from '@app/_services'
 
 @Component({ templateUrl: 'login.component.html' })
 export class LoginComponent implements OnInit {
     form!: FormGroup;
     loading = false;
     submitted = false;
-    error?: string;
-    success?: string;
+    // error?: string;
+    // success?: string;
 
     constructor(
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
         private router: Router,
-        private accountService: AccountService
+        private accountService: AccountService,
+        private alertService: AlertService
     ) {
         // redirect to home if already logged in
         if (this.accountService.userValue) {
@@ -33,7 +34,7 @@ export class LoginComponent implements OnInit {
 
         // show success message after registration
         if (this.route.snapshot.queryParams.registered) {
-            this.success = 'Registration successful';
+            // this.success = 'Registration successful';
         }
     }
 
@@ -44,8 +45,9 @@ export class LoginComponent implements OnInit {
         this.submitted = true;
 
         // reset alerts on submit
-        this.error = '';
-        this.success = '';
+        this.alertService.clear();
+        // this.error = '';
+        // this.success = '';
 
         // stop here if form is invalid
         if (this.form.invalid) {
@@ -62,7 +64,8 @@ export class LoginComponent implements OnInit {
                     this.router.navigateByUrl(returnUrl);
                 },
                 error: error => {
-                    this.error = error;
+                    this.alertService.error(error);
+                    // this.error = error;
                     this.loading = false;
                 }
             });
